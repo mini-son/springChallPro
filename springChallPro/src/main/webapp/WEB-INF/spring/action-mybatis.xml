@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	 
+	<aop:aspectj-autoproxy/>
+	
+	<!-- 커넥션 풀 설정  -->
+	<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+<!-- 	  <property name="driver" value="${jdbc.driver}" />
+	  <property name="url" value="${jdbc.url}"/>
+	  <property name="username" value="${jdbc.username}" />
+	  <property name="password" value="${jdbc.password}" /> -->
+		<property name="driver" value="com.mysql.cj.jdbc.Driver" />
+    <property name="url" value="jdbc:mysql://172.30.1.16:3307/challenge3?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"/>
+    <property name="username" value="min" />
+    <property name="password" value="1234" />
+	</bean>
+	
+	<!-- modelConfig.xml에는
+	     <typeAlias type="패키지명.클래스명"    alias="클래스별칭"/>지정
+	      classpath:mybatis/mappers/에는  쿼리문이 있는 xml문서 설정               -->
+	<bean id="sqlSessionFactory"   class="org.mybatis.spring.SqlSessionFactoryBean">
+	      <property name="dataSource" ref="dataSource" />
+	        <property name="configLocation"
+	         value="classpath:mybatis/model/modelConfig.xml" />
+	      <property name="mapperLocations" value="classpath:mybatis/mappers/*.xml" />
+	</bean>
+	
+	<!-- sqlSession이름으로  bean등록 -->
+	<bean id="sqlSession"
+	     class="org.mybatis.spring.SqlSessionTemplate">
+	   <constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+</beans>

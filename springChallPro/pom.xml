@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- xml주석문.xml문서의 첫 번째 줄에는 반드시 xml선언부가 작성되어야만 합니다 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mycom</groupId><!-- 스프링프로젝트 생성시 입력한  도메인이름 -->
+	<artifactId>app</artifactId><!-- 프로젝트에 할당한 고유id -->
+	<name>springPro</name>
+	<packaging>war</packaging>
+	<version>1.0.0-BUILD-SNAPSHOT</version><!-- 기본은 1.0-SNAPSHOT/ 완성되지않은 버전은 SNAPSHOT, 완성된 공식배포버전은 RELEASE-->
+	<properties>
+		<java-version>1.8</java-version>
+		<org.springframework-version>4.3.0.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+	</properties>
+	<!-- dependencies요소 : 의존성 라이브러리들의 정보 -->
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				 </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+				
+		<!-- AspectJ : AOP를 사용하는 AspectJ라이브러리
+		     참고  AOP(Aspect Oriented Programming) 
+		      핵심 비즈니스 로직 외에 부가적인 기능(예외처리, 트랜젝션처리, 로깅처리 등)을
+		      효율적으로 관리하도록 하여
+		      응집도가 높은 코드를 유지할 수 있도록 함
+		   참고 
+		  - 모듈은 시스템의 각 기능으로 소프트웨어의 성능을 향상시키거나 
+		         수정 및 재사용을 용이하게 하기 위해 기능 단위로 분해한 것을 말한다.
+		  - 모듈의 독립성은 결합도(Coupling)를 약하게, 응집도(Cohesion)를 강하게, 
+		         모듈의 크기가 작을 때 독립성이 높아진다.
+		  - 독립성이 높은 모듈일수록 모듈을 수정하더라도 다른 모듈들에게는 거의 영향을 미치지 않고, 
+		         오류가 발생하더라도 쉽게 발견하고 수정할 수 있다.
+		  -응집도(Cohesion)는 명령어나 호출문 등의 모듈의 내부 요소들의 서로 관련있는 정도, 
+		                   즉 모듈이 독립적인 기능으로 구성됐는지 정도를 의미한다. 
+		                  응집도가 강할수록 독립적인 모듈  	
+      -결합도(Coupling)는 모듈 간에 상호 의존하는 정도 또는 두 모듈 사이의 연관 관계를 의미한다. 
+                                    결합도가 약할수록 독립적인 모듈. 결합도는 약할수록 좋다.     -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		
+		<!-- Logging :로그기록하는 slf4j관련 라이브러리  -->
+		<!-- Logger 클래스는 log4j를 지원하는 핵심클래스로서, 아래와 같은  레벨이 있다
+		     로그출력여부는 레벨에 따라 결정된다
+		  레벨
+		 FATAL - 조기 종료를 유발하는 심각한 오류가 발생하는 상태를 뜻한다
+		 ERROR - 기타 런타임오류 or 예기치 않는 상태
+		 WARN  - 경고성메세지. 사용되지 않는 api사용
+		                  바람직하지 않거나  예기치 않는 런타임 상황
+		 INFO  - 정보제공용 메세지
+		 DEBUG - 디버그 용도
+		 TRACE - 가장 하위 로깅 레벨. 모든 로그에 대한 상세한 정보  
+		 
+		 레벨은 TRACE<DEBUG<INFO<WARN<ERROR<FATAL 순으로 레벨이 높다.
+		예) INFO레벨 이상으로 출력을 원하면 INFO,WARN,ERROR,FATAL로그까지 출력 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+		<!-- Test : JAVA용 테스트단위 라이브러리 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency> 
+	
+		<!-- 파일업로드 라이브러리
+		     commons-fileupload 와  commons-io 필요 -->
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.6</version>
+		</dependency>
+		
+		<!-- 썸네일 이미지 -->
+		<dependency>
+			<groupId>net.coobird</groupId> 
+			<artifactId>thumbnailator</artifactId> 
+			<version>0.4.8</version> 
+		</dependency>
+	  
+	  <!-- JSON관련: JSON을 Java Object로 변환,Java Object를  JSON형태로 변환 라이브러리
+			jackson-annotations라이브러리 &
+			jackson-core라이브러리에 의존
+		-->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.14.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>    
+		</dependency> 
+		<!-- tiles라이브러리 : 화면Layout템플릿 -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-servlet</artifactId>
+			<version>2.2.2</version>
+    </dependency> 
+		
+		<!-- mysql연동 -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.24</version>
+		</dependency>
+		
+		
+		<!-- JDBC 연동을 위한 라이브러리  -->
+		<!-- spring-jdbc : 커넥션 풀 설치를 위한 라이브러리 -->
+		<dependency>
+       <groupId>org.springframework</groupId>
+       <artifactId>spring-jdbc</artifactId>
+       <version>${org.springframework-version}</version>
+   	</dependency>
+   	<!-- commons-dbcp2 : 실제 커넥션 풀을 처리하기 위한 라이브러리 -->
+   	<dependency>
+       <groupId>org.apache.commons</groupId>
+       <artifactId>commons-dbcp2</artifactId>
+       <version>2.9.0</version>
+   	</dependency>
+		
+		<!-- 데이터소스 관련 라이브러리 등록 -->
+		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+		<dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		    <version>1.9.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<!-- mybatis관련 라이브러리 등록 -->
+		<!-- mybatis : mybatis를 위한 라이브러리 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!-- mybatis-spring : mybatis와  spring를 연결 라이브러리  -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		
+		<!-- 오라클연동 라이브러리 -->
+		<dependency>
+		    <groupId>oracle.jdbc</groupId>
+		    <artifactId>OracleDriver</artifactId>
+		    <version>11.2.0</version>
+		    <scope>system</scope>
+		    <!-- 시스템에 설치된 oracle을 사용한다는 의미 -->
+		    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6.jar</systemPath>
+		</dependency>
+		 
+		 <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.28</version>
+		    <scope>provided</scope>
+		</dependency>
+   
+	</dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

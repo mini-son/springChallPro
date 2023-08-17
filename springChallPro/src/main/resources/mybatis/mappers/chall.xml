@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chall">
+	<!-- 회원수 조회 -->
+	<!-- <select id="유니크한id명" resultType="자바의 데이터타입">
+	예시 <select id="totalMemberCNT" resultType="java.lang.Integer"> 
+	myBatis에서는 자바의 데이터타입이 내장되어 별칭(alias)으로 제공되고 있다.
+	short(별칭) 	Short(자바의 데이터 타입)
+	int 										Integer
+	string							String
+	hashmap 			Hashmap
+	list 										List
+	arraylist 				ArrayList-->
+	<select id="totalMemberCNT" resultType="int">
+		<![CDATA[
+		select count(no)
+		from member
+		]]>
+	</select>
+	
+	<!-- 목록조회 
+	 resultType="java.util.Hashmap"으로 작성하는 것이 원칙이나
+	 myBatis에서 내장되어 제공되는 typeAlias를 사용하면 resultType="hashmap"으로 작성가능-->
+		<select id="selectChallList" resultType="hashmap">
+			<![CDATA[
+			select a.chall_no, a.cate_no, a.chall_title, a.mem_no, a.chall_write_date, a.chall_con, a.certifi_words, b.nickname, c.cate_name
+			from challenge_board a 
+			left join member b
+			on a.mem_no = b.mem_no left join category c
+			on a.cate_no = c.cate_no
+			]]>
+		</select>
+	
+	<!--chall_no로 챌린지조회 
+	 parameterType="java.lang.String"으로 작성하는 것이 원칙이나
+	 myBatis에서 내장되어 제공되어 typeAlias를 사용하면  resultType="string"으로 작성가능
+	 resultType="com.mycom.member.domain.MemberDTO"으로 작성하는 것이 원칙이나
+	mybatis/model/modelConfig.xml에서 선언한 typeAlias를 사용하면 resultType="MemberDTO"으로 작성가능-->
+		<select id="selectByNo" resultType="ChallDTO"
+										 parameterType="int">
+				<![CDATA[
+				select cb.chall_no, cb.cate_no, cb.chall_title, cb.mem_no, m.nickname, cb.chall_write_date, cb.chall_con, cb.certifi_words,c.cate_name
+				from challenge_board cb inner join member m
+				on cb.mem_no = m.mem_no left join category c
+				on cb.cate_no = c.cate_no
+				where chall_no = #{chall_no}
+				]]>
+		</select>
+	
+		<!--챌린지 삭제
+		//파라미터  String memberid-삭제하고 싶은 회원id
+		public void updateIsShow(String memberid) {
+		sqlSession.update("member.updateIsShow",memberid); -->
+		<delete id="deleteChall" parameterType="int">	
+				<![CDATA[
+				delete from challenge_board
+				where chall_no=#{chall_no}
+				]]>
+		</delete>
+	
+		<!-- 챌린지 등록 -->
+		<insert id="insertChall" parameterType="ChallDTO">
+				<![CDATA[
+				insert into challenge_board(cate_no,chall_title,chall_write_date,chall_con,certifi_words,mem_no)
+				values(#{cate_no},#{chall_title},now(),#{chall_con},#{certifi_words},#{mem_no})
+				]]>
+		</insert>
+		
+		<!-- 수정
+			 parameterType="java.util.Map"으로 작성하는 것이 원칙이나
+			 myBatis에서 내장되어 제공되어 typeAlias를 사용하면  resultType="map"으로 작성가능-->
+		<update id="updateChall" parameterType="map">	
+					<![CDATA[
+					update challenge_board
+					set cate_no=#{cate_no}, chall_title=#{chall_title}, chall_write_date=now(), chall_con=#{chall_con} ,certifi_words=#{certifi_words}
+					where chall_no=#{chall_no}
+					]]>
+		</update>
+</mapper>
